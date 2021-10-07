@@ -23,13 +23,17 @@ h1 {
 
 /* Tic Tac Toe board style */
 .board {
-    margin: auto;
     background-color: #FFDAB9;
     padding: 1rem;
-    width: clamp(325px, 4vw, 400px);
 
     border: 1px solid #FDCFB2;
     border-radius: 2rem;
+}
+
+.main-board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .board h2 {
