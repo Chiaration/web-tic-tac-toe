@@ -23,6 +23,12 @@ h1 {
     border-radius: 2rem;
 }
 
+.board h2 {
+    margin: 1rem;
+    text-align: center;
+    color: #C66969;
+}
+
 /* The tic tac toe playing board */
 .grid {
     display: inline-flex;
