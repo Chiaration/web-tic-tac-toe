@@ -18,9 +18,24 @@ const gameBoard = (() => {
         }
     }
 
+    const checkWinner = (Player) => {
+        if ((board[0] == Player.getMark() && board[1] == Player.getMark() && board[2] == Player.getMark())
+         || (board[3] == Player.getMark() && board[4] == Player.getMark() && board[5] == Player.getMark())
+         || (board[6] == Player.getMark() && board[7] == Player.getMark() && board[8] == Player.getMark())
+         || (board[0] == Player.getMark() && board[3] == Player.getMark() && board[6] == Player.getMark())
+         || (board[1] == Player.getMark() && board[4] == Player.getMark() && board[7] == Player.getMark())
+         || (board[2] == Player.getMark() && board[5] == Player.getMark() && board[8] == Player.getMark())
+         || (board[0] == Player.getMark() && board[4] == Player.getMark() && board[8] == Player.getMark())
+         || (board[2] == Player.getMark() && board[4] == Player.getMark() && board[6] == Player.getMark())) {
+             return Player
+        } else {
+            return false;
+        }
+    }
+
     const getBoard = () => board;
 
-    return {playTurn, getBoard, isEmpty}
+    return {playTurn, getBoard, isEmpty, checkWinner}
 })();
 
 // Basic module pattern for the displaying of the content to the website
@@ -51,11 +66,16 @@ const gameplay = (() => {
     const p1 = Player('X');
     const p2 = Player('O');
     let currentTurn = p1;
+    let winner = false;
 
     // Update the status of the game
     const updateStatus = (playerMark) => {
         const turnStatus = document.getElementById('turnStatus');
-        turnStatus.textContent = `Player ${playerMark.getMark()}'s Turn`;
+        if (winner == false) {
+            turnStatus.textContent = `Player ${playerMark.getMark()}'s Turn`;
+        } else if (winner) {
+            turnStatus.textContent = `Player ${playerMark.getMark()} WON`;
+        }
     }
     updateStatus(p1);
 
@@ -64,15 +84,26 @@ const gameplay = (() => {
     grids.forEach((grid) => {
         grid.addEventListener('click', () => {
             let currentPosition = grid.getAttribute('data-position')
-            if (gameBoard.isEmpty(currentPosition)) {
+            if (gameBoard.isEmpty(currentPosition) && winner == false) {
                 gameBoard.playTurn(currentTurn.getMark(), currentPosition);
                 grid.classList.remove('selected'); //Remove the hover effect
-                // Change the player turn once turn is completed
-                if (currentTurn == p1) {
-                    currentTurn = p2;
+
+                console.log(gameBoard.checkWinner(currentTurn));
+
+                if (!gameBoard.checkWinner(currentTurn)) {
+                    // Change the player turn once turn is completed
+                    if (currentTurn == p1) {
+                        currentTurn = p2;
+                    } else {
+                        currentTurn = p1;
+                    };
                 } else {
-                    currentTurn = p1;
-                };
+                    // Declare winner 
+                    winner = true;
+                    grids.forEach((grid) => {
+                        grid.classList.remove('selected');
+                    })
+                }
                 // Display new status
                 updateStatus(currentTurn)
             }
