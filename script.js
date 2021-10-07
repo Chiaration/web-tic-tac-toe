@@ -10,9 +10,17 @@ const gameBoard = (() => {
         displayController.refreshBoard();
     }
 
+    const isEmpty = (position) => {
+        if (board[position] == " ") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     const getBoard = () => board;
 
-    return {playTurn, getBoard}
+    return {playTurn, getBoard, isEmpty}
 })();
 
 // Basic module pattern for the displaying of the content to the website
@@ -55,13 +63,19 @@ const gameplay = (() => {
     const grids = document.querySelectorAll('.grid');
     grids.forEach((grid) => {
         grid.addEventListener('click', () => {
-                gameBoard.playTurn(currentTurn.getMark(), grid.getAttribute('data-position'));
+            let currentPosition = grid.getAttribute('data-position')
+            if (gameBoard.isEmpty(currentPosition)) {
+                gameBoard.playTurn(currentTurn.getMark(), currentPosition);
+                grid.classList.remove('selected'); //Remove the hover effect
+                // Change the player turn once turn is completed
                 if (currentTurn == p1) {
                     currentTurn = p2;
                 } else {
                     currentTurn = p1;
                 };
+                // Display new status
                 updateStatus(currentTurn)
+            }
         });
     })
     

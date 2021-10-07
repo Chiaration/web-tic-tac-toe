@@ -2,6 +2,15 @@
 body {
     background-color: #F8AD9D;
     margin: auto;
+
+    /* Don't let user select */
+    /* Credit:  https://www.arungudelli.com/tutorial/css/disable-text-selection-in-html-using-user-select-css-property/#:~:text=Using%20user%2Dselect%3Anone%3A,example%20to%20understand%20if%20further.&text=But%20we%20have%20to%20add,and%20internet%20explorer%20or%20edge.*/
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+    
 }
 
 /* Style for the title of the page */
@@ -43,6 +52,10 @@ h1 {
     color: #B45F5F;
 
     font-size: clamp(2rem, 4vw, 4rem);
+}
+
+.selected:hover {
+    background-color: #fac394;
 }
 
 .row {
