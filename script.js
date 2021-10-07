@@ -33,9 +33,17 @@ const gameBoard = (() => {
         }
     }
 
+    const isTie = () => {
+        if (board.includes(" ")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     const getBoard = () => board;
 
-    return {playTurn, getBoard, isEmpty, checkWinner}
+    return {playTurn, getBoard, isEmpty, checkWinner, isTie}
 })();
 
 // Basic module pattern for the displaying of the content to the website
@@ -67,14 +75,17 @@ const gameplay = (() => {
     const p2 = Player('O');
     let currentTurn = p1;
     let winner = false;
-
+    
     // Update the status of the game
     const updateStatus = (playerMark) => {
         const turnStatus = document.getElementById('turnStatus');
-        if (winner == false) {
-            turnStatus.textContent = `Player ${playerMark.getMark()}'s Turn`;
-        } else if (winner) {
+        // Check for tie 
+        if (winner == false && gameBoard.isTie() == true) {
+            turnStatus.textContent = `GAME ENDED ON TIE`;
+        } else if (winner) {  //Then check for winner
             turnStatus.textContent = `Player ${playerMark.getMark()} WON`;
+        } else if (winner == false) { //Otherwise show player's turn
+            turnStatus.textContent = `Player ${playerMark.getMark()}'s Turn`;
         }
     }
     updateStatus(p1);
@@ -84,6 +95,7 @@ const gameplay = (() => {
     grids.forEach((grid) => {
         grid.addEventListener('click', () => {
             let currentPosition = grid.getAttribute('data-position')
+            // Check if the position is empty and check if there is already a winner
             if (gameBoard.isEmpty(currentPosition) && winner == false) {
                 gameBoard.playTurn(currentTurn.getMark(), currentPosition);
                 grid.classList.remove('selected'); //Remove the hover effect
@@ -100,6 +112,7 @@ const gameplay = (() => {
                 } else {
                     // Declare winner 
                     winner = true;
+                    // Disable the board 
                     grids.forEach((grid) => {
                         grid.classList.remove('selected');
                     })
