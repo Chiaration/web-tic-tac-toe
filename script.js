@@ -9,10 +9,22 @@ const gameBoard = (() => {
         board[position] = player;
     }
 
-    return {playTurn, board}
+    const getBoard = () => {return board};
+
+    return {playTurn, getBoard}
 })();
 
 // Basic module pattern for the displaying of the content to the website
 const displayController = (() => {
+    let currentBoard = gameBoard.getBoard();
 
+    const refreshBoard = () => {
+        const grids = document.querySelectorAll('.grid');
+        grids.forEach((grid) => {
+            grid.innerHTML = currentBoard[grid.getAttribute('data-position')];
+        });
+    };
+
+    refreshBoard();
 })();
+
