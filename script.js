@@ -5,11 +5,13 @@ const gameBoard = (() => {
              " ", " ", " ",
              " ", " ", " "];
 
+    // Player turn function
     const playTurn = (player, position) => {
         board[position] = player;
         displayController.refreshBoard();
     }
 
+    // Check if the board is empty
     const isEmpty = (position) => {
         if (board[position] == " ") {
             return true;
@@ -18,6 +20,7 @@ const gameBoard = (() => {
         }
     }
 
+    // Check if there is a winner or not
     const checkWinner = (Player) => {
         if ((board[0] == Player.getMark() && board[1] == Player.getMark() && board[2] == Player.getMark())
          || (board[3] == Player.getMark() && board[4] == Player.getMark() && board[5] == Player.getMark())
@@ -33,6 +36,7 @@ const gameBoard = (() => {
         }
     }
 
+    // Check if the game ended on a tie
     const isTie = () => {
         if (board.includes(" ")) {
             return false;
@@ -50,6 +54,7 @@ const gameBoard = (() => {
 const displayController = (() => {
     let currentBoard = gameBoard.getBoard();
 
+    // Display board with array data
     const refreshBoard = () => {
         const grids = document.querySelectorAll('.grid');
         grids.forEach((grid) => {
@@ -69,6 +74,7 @@ const Player = (mark) => {
     return {getMark}
 }
 
+// Game Loop Module function
 const gameplay = (() => {
     // Create two players
     const p1 = Player('X');
